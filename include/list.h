@@ -14,6 +14,7 @@ template <class T>
 class List {
 private:
 	Node<T>* first;
+	int size;
 public:
 	   class iterator {
        private:
@@ -64,6 +65,7 @@ public:
 	 List()
 	 {
 		 first=nullptr;
+		 size=0;
 	 }
 
 	 List(const List& list)
@@ -73,8 +75,8 @@ public:
 		 for (iterator iter=list.begin(); iter!=list.end(); ++iter)
 		 { 
 			 insert(iter->data, curr);
-			 curr=curr->next; 
 		 }
+		 size=list.size;
 	 }
 
 	 ~List()
@@ -101,12 +103,14 @@ public:
 	 {
 		while (first!=nullptr)
 		pop_front();
+		size=0;
 	 }
 
 	 void push_front(T elem)
 	 {
 		Node<T>*p=new Node<T> (elem, first);
 		first=p;
+		size++;
 	 }
 
 	void pop_front()
@@ -114,6 +118,7 @@ public:
 		 Node<T>* p=first;
 		 first=p->next;
 		 delete p;
+		 size--;
 	 }
 
 	void insert(T value, Node<T>* pn)
@@ -123,6 +128,7 @@ public:
 		else {
 			Node<T>* p=new Node<T>(value, pn->next);
 			pn->next=p;
+			size++;
 		}
 	}
 	
@@ -134,6 +140,24 @@ public:
 			Node<T>* p=pn->next;
 			pn->next=p->next;
 			delete p;
+			size--;
+		}
+	}
+	int get_size() { return size; }
+	void push_back(T elem)
+	{
+		insert(elem, get_last());
+	}
+	Node <T>* get_last()
+	{
+		if (first==nullptr)
+		    return first;
+		else {
+			Node <T>* last; Node <T>* curr=first;
+		    while (curr->next!=nullptr)
+			      curr=curr->next;
+		    last=curr;
+		    return last;
 		}
 	}
 };
